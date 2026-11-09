@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Quiz interativo: descubra como você está desenvolvendo suas habilidades e conheça a Master Mind.">
+<title>Quiz Master Mind | Descubra seu próximo passo</title>
+<style>
+:root{--bg:#090909;--panel:#151515;--gold:#d8b45a;--gold2:#f1d58a;--muted:#b8b8b8;--line:#303030}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#292113 0%,#090909 52%);color:#f7f4ed;font-family:Inter,system-ui,Arial,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px}
+.wrap{width:min(100%,720px)}.brand{letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-size:12px;font-weight:800;text-align:center;margin-bottom:18px}
+.card{background:linear-gradient(145deg,#191919,#101010);border:1px solid #514326;border-radius:24px;padding:clamp(24px,5vw,46px);box-shadow:0 25px 90px #0009}
+.kicker{color:var(--gold);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}
+h1{font-size:clamp(30px,6vw,48px);line-height:1.06;margin:12px 0 16px}h1 span{color:var(--gold2)}
+p{color:#d0ccc3;line-height:1.65}.sub{font-size:17px;max-width:560px}
+button{font:inherit;cursor:pointer}.primary{width:100%;border:0;border-radius:12px;padding:16px 20px;background:linear-gradient(110deg,#b78b32,#f0d68e);color:#17120a;font-weight:850;margin-top:20px;transition:.2s}.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.option{display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:#101010;color:#f7f4ed;padding:15px 16px;margin:10px 0;transition:.18s}.option:hover,.option:focus{border-color:var(--gold);background:#211c12;outline:none}
+.topline{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:12px}.bar{height:6px;background:#333;border-radius:99px;overflow:hidden;margin-bottom:28px}.fill{height:100%;background:linear-gradient(90deg,#a87c28,#f0d68e);width:0;transition:.25s}
+h2{font-size:clamp(23px,4vw,31px);line-height:1.2;margin:8px 0 20px}.small{font-size:12px;color:#9b978e}.result{border:1px solid #514326;background:#1c180f;padding:18px;border-radius:14px;margin:20px 0}.result strong{color:var(--gold2)}.hidden{display:none}.footer{text-align:center;color:#8c887f;font-size:12px;margin:16px 0}.link{color:var(--gold2)}
+@media(max-width:480px){body{padding:14px}.card{border-radius:18px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="brand">MASTER MIND · QUIZ INTERATIVO</div>
+  <section class="card" id="intro">
+    <div class="kicker">Autoconhecimento • Desenvolvimento • Ação</div>
+    <h1>Qual é o seu próximo <span>nível?</span></h1>
+    <p class="sub">Responda a 6 perguntas rápidas sobre hábitos, objetivos e desenvolvimento pessoal. No final, veja uma sugestão de próximo passo e conheça a Master Mind.</p>
+    <p class="small">Leva cerca de 2 minutos. Não existe resposta perfeita — escolha o que mais combina com você.</p>
+    <button class="primary" id="start">Começar o quiz →</button>
+  </section>
+
+  <section class="card hidden" id="quiz">
+    <div class="topline"><span id="counter">Pergunta 1 de 6</span><span id="pct">17%</span></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="kicker">Seu momento atual</div>
+    <h2 id="question"></h2>
+    <div id="options"></div>
+    <button class="primary" id="next" disabled>Continuar →</button>
+  </section>
+
+  <section class="card hidden" id="result">
+    <div class="kicker">Seu resultado</div>
+    <h1 id="resultTitle">Seu próximo passo</h1>
+    <p id="resultText"></p>
+    <div class="result"><strong>Uma ideia para colocar em prática:</strong><p id="tip" style="margin-bottom:0"></p></div>
+    <p>Quer conhecer a proposta da Master Mind? Confira os detalhes diretamente na página do produto antes de decidir.</p>
+    <a href="https://pay.cakto.com.br/4wvfwpc_1301741" target="_blank" rel="noopener noreferrer" style="text-decoration:none"><button class="primary">Conhecer a Master Mind →</button></a>
+    <button class="option" id="again" style="text-align:center">Refazer o quiz</button>
+    <p class="small">Este quiz é informativo e não garante resultados pessoais ou financeiros. Consulte a página de compra para verificar conteúdo, condições e suporte oferecidos.</p>
+  </section>
+  <div class="footer">Quiz independente • A compra é opcional</div>
+</main>
+<script>
+const questions=[
+ {q:"Quando você define uma meta, o que costuma fazer primeiro?",a:["Escrevo o que quero alcançar e organizo etapas","Espero ter motivação para começar","Começo sem planejar e ajusto depois","Ainda tenho dificuldade para definir metas"],v:[3,1,2,0]},
+ {q:"Como você costuma lidar com uma tarefa importante?",a:["Divido em pequenas ações e começo pela primeira","Deixo para quando estiver com vontade","Tento fazer tudo de uma vez","Peço orientação e monto um plano"],v:[3,1,1,3]},
+ {q:"Com que frequência você reserva tempo para aprender algo novo?",a:["Toda semana ou quase toda semana","De vez em quando","Raramente","Tenho vontade, mas ainda não criei uma rotina"],v:[3,2,0,1]},
+ {q:"Quando recebe uma crítica construtiva, você...",a:["Avalio o que posso melhorar","Fico na defensiva e ignoro","Procuro entender e testar mudanças","Depende da situação"],v:[3,0,3,1]},
+ {q:"Qual habilidade você mais gostaria de desenvolver agora?",a:["Comunicação e confiança","Organização e disciplina","Liderança e relacionamento","Ainda estou descobrindo"],v:[2,2,2,1]},
+ {q:"Qual frase mais combina com seu momento?",a:["Quero sair da intenção e partir para a ação","Quero melhorar hábitos que já comecei","Quero aprender com conteúdos e métodos estruturados","Quero primeiro entender minhas prioridades"],v:[3,2,3,1]}
+];
+let index=0,score=0,selected=-1;
+const $=id=>document.getElementById(id);
+function show(id){["intro","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function render(){
+ selected=-1;$("next").disabled=true;
+ const item=questions[index];$("counter").textContent=`Pergunta ${index+1} de ${questions.length}`;
+ const progress=Math.round((index+1)/questions.length*100);$("pct").textContent=progress+"%";$("fill").style.width=progress+"%";
+ $("question").textContent=item.q;$("options").innerHTML="";
+ item.a.forEach((label,i)=>{const b=document.createElement("button");b.className="option";b.textContent=label;b.onclick=()=>{selected=i;[...$("options").children].forEach((el,j)=>el.style.borderColor=j===i?"#d8b45a":"#303030");$("next").disabled=false};$("options").appendChild(b)});
+ $("next").textContent=index===questions.length-1?"Ver meu resultado →":"Continuar →";
+}
+$("start").onclick=()=>{index=0;score=0;show("quiz");render()};
+$("next").onclick=()=>{if(selected<0)return;score+=questions[index].v[selected];if(index<questions.length-1){index++;render()}else finish()};
+function finish(){
+ let title,text,tip;
+ if(score>=14){title="Você já tem uma boa base!";text="Suas respostas mostram uma tendência a transformar objetivos em ações. O próximo passo é manter consistência e acompanhar seu progresso.";tip="Escolha uma meta para os próximos 7 dias, defina uma ação pequena por dia e registre o que conseguiu fazer."}
+ else if(score>=8){title="Você está construindo seu caminho";text="Você demonstra interesse em evoluir e pode ganhar clareza com uma rotina simples e objetivos bem definidos.";tip="Escolha uma habilidade para desenvolver neste mês e reserve dois momentos por semana para praticá-la."}
+ else{title="Hora de começar pelo primeiro passo";text="Talvez você ainda esteja organizando suas prioridades. Começar pequeno pode ajudar a transformar vontade em movimento.";tip="Anote uma prioridade, escreva por que ela importa e escolha uma ação de 10 minutos para iniciar."}
+ $("resultTitle").textContent=title;$("resultText").textContent=text;$("tip").textContent=tip;show("result");
+}
+$("again").onclick=()=>{index=0;score=0;show("quiz");render()};
+</script>
+</body>
+</html>
